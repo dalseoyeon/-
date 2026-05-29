@@ -1,84 +1,151 @@
 import streamlit as st
+import random
 
-st.set_page_config(page_title="MBTI 테스트", page_icon="🧠")
+st.set_page_config(page_title="오늘의 노래 추천", page_icon="🎵")
 
-st.title("🧠 간단 MBTI 테스트")
-st.write("20개의 질문에 답하고 내 MBTI를 확인해보세요!")
+st.title("🎵 오늘의 노래 추천")
+st.write("2010~2020 인기 노래 중 랜덤 추천 ✨")
 
-questions = [
-    ("사람들과 함께 있으면 에너지가 생긴다", "E"),
-    ("혼자 있는 시간이 더 편하다", "I"),
-    ("새로운 사람 만나는 걸 좋아한다", "E"),
-    ("생각할 시간을 충분히 가져야 한다", "I"),
+songs = [
 
-    ("현실적인 것이 중요하다", "S"),
-    ("상상과 아이디어를 좋아한다", "N"),
-    ("경험을 더 믿는 편이다", "S"),
-    ("미래 가능성을 자주 생각한다", "N"),
+    # 아이유
+    {"title":"좋은날","artist":"아이유","year":"2010"},
+    {"title":"밤편지","artist":"아이유","year":"2017"},
+    {"title":"에잇","artist":"아이유","year":"2020"},
+    {"title":"Blueming","artist":"아이유","year":"2019"},
 
-    ("논리적으로 판단하는 편이다", "T"),
-    ("감정을 중요하게 생각한다", "F"),
-    ("사실이 더 중요하다", "T"),
-    ("사람 기분을 먼저 생각한다", "F"),
+    # BTS
+    {"title":"Dynamite","artist":"BTS","year":"2020"},
+    {"title":"봄날","artist":"BTS","year":"2017"},
+    {"title":"DNA","artist":"BTS","year":"2017"},
+    {"title":"작은 것들을 위한 시","artist":"BTS","year":"2019"},
 
-    ("계획적으로 움직인다", "J"),
-    ("즉흥적인 편이다", "P"),
-    ("미리 준비하는 걸 좋아한다", "J"),
-    ("상황에 따라 유연하게 행동한다", "P"),
+    # EXO
+    {"title":"으르렁","artist":"EXO","year":"2013"},
+    {"title":"LOVE SHOT","artist":"EXO","year":"2018"},
+    {"title":"CALL ME BABY","artist":"EXO","year":"2015"},
+    {"title":"Ko Ko Bop","artist":"EXO","year":"2017"},
 
-    ("활동적인 모임을 좋아한다", "E"),
-    ("조용한 환경이 좋다", "I"),
-    ("결정을 빠르게 내린다", "J"),
-    ("선택 전에 오래 고민한다", "P"),
+    # BLACKPINK
+    {"title":"뚜두뚜두","artist":"BLACKPINK","year":"2018"},
+    {"title":"Kill This Love","artist":"BLACKPINK","year":"2019"},
+    {"title":"붐바야","artist":"BLACKPINK","year":"2016"},
+    {"title":"How You Like That","artist":"BLACKPINK","year":"2020"},
+
+    # TWICE
+    {"title":"CHEER UP","artist":"TWICE","year":"2016"},
+    {"title":"TT","artist":"TWICE","year":"2016"},
+    {"title":"FANCY","artist":"TWICE","year":"2019"},
+    {"title":"LIKEY","artist":"TWICE","year":"2017"},
+
+    # Red Velvet
+    {"title":"빨간 맛","artist":"Red Velvet","year":"2017"},
+    {"title":"Psycho","artist":"Red Velvet","year":"2019"},
+    {"title":"러시안 룰렛","artist":"Red Velvet","year":"2016"},
+    {"title":"Bad Boy","artist":"Red Velvet","year":"2018"},
+
+    # AKMU
+    {"title":"200%","artist":"악뮤","year":"2014"},
+    {"title":"DINOSAUR","artist":"악뮤","year":"2017"},
+    {"title":"어떻게 이별까지 사랑하겠어","artist":"악뮤","year":"2019"},
+    {"title":"Give Love","artist":"악뮤","year":"2014"},
+
+    # 태연
+    {"title":"I","artist":"태연","year":"2015"},
+    {"title":"사계","artist":"태연","year":"2019"},
+    {"title":"Rain","artist":"태연","year":"2016"},
+    {"title":"Why","artist":"태연","year":"2016"},
+
+    # 볼빨간사춘기
+    {"title":"우주를 줄게","artist":"볼빨간사춘기","year":"2016"},
+    {"title":"썸 탈꺼야","artist":"볼빨간사춘기","year":"2017"},
+    {"title":"나만 안되는 연애","artist":"볼빨간사춘기","year":"2016"},
+    {"title":"여행","artist":"볼빨간사춘기","year":"2018"},
+
+    # 버스커버스커
+    {"title":"벚꽃 엔딩","artist":"버스커버스커","year":"2012"},
+    {"title":"여수 밤바다","artist":"버스커버스커","year":"2012"},
+    {"title":"처음엔 사랑이란게","artist":"버스커버스커","year":"2012"},
+
+    # 태양
+    {"title":"눈, 코, 입","artist":"태양","year":"2014"},
+    {"title":"링가링가","artist":"태양","year":"2013"},
+    {"title":"WAKE ME UP","artist":"태양","year":"2017"},
+
+    # WINNER
+    {"title":"REALLY REALLY","artist":"WINNER","year":"2017"},
+    {"title":"LOVE ME LOVE ME","artist":"WINNER","year":"2017"},
+    {"title":"AH YEAH","artist":"WINNER","year":"2019"},
+
+    # iKON
+    {"title":"사랑을 했다","artist":"iKON","year":"2018"},
+    {"title":"취향저격","artist":"iKON","year":"2015"},
+    {"title":"죽겠다","artist":"iKON","year":"2018"},
+
+    # 헤이즈
+    {"title":"비도 오고 그래서","artist":"헤이즈","year":"2017"},
+    {"title":"널 너무 모르고","artist":"헤이즈","year":"2018"},
+    {"title":"We don't talk together","artist":"헤이즈","year":"2019"},
+
+    # 폴킴
+    {"title":"모든 날 모든 순간","artist":"폴킴","year":"2018"},
+    {"title":"너를 만나","artist":"폴킴","year":"2018"},
+    {"title":"비","artist":"폴킴","year":"2016"},
+
+    # 마마무
+    {"title":"HIP","artist":"마마무","year":"2019"},
+    {"title":"넌 is 뭔들","artist":"마마무","year":"2016"},
+    {"title":"별이 빛나는 밤","artist":"마마무","year":"2018"},
+
+    # 청하
+    {"title":"벌써 12시","artist":"청하","year":"2019"},
+    {"title":"롤러코스터","artist":"청하","year":"2018"},
+    {"title":"Snapping","artist":"청하","year":"2019"},
+
+    # 여자친구
+    {"title":"시간을 달려서","artist":"여자친구","year":"2016"},
+    {"title":"오늘부터 우리는","artist":"여자친구","year":"2015"},
+    {"title":"밤","artist":"여자친구","year":"2018"},
+
+    # 세븐틴
+    {"title":"아주 NICE","artist":"세븐틴","year":"2016"},
+    {"title":"예쁘다","artist":"세븐틴","year":"2016"},
+    {"title":"독 : Fear","artist":"세븐틴","year":"2019"},
+
+    # NCT
+    {"title":"영웅","artist":"NCT 127","year":"2020"},
+    {"title":"Cherry Bomb","artist":"NCT 127","year":"2017"},
+    {"title":"BOSS","artist":"NCT U","year":"2018"},
+
+    # 기타 인기곡
+    {"title":"한숨","artist":"이하이","year":"2016"},
+    {"title":"LOVE DAY","artist":"양요섭, 정은지","year":"2012"},
+    {"title":"좋니","artist":"윤종신","year":"2017"},
+    {"title":"가을 타나 봐","artist":"바이브","year":"2018"},
+    {"title":"취중고백","artist":"김민석","year":"2020"},
+    {"title":"Way Back Home","artist":"숀","year":"2018"},
+    {"title":"METEOR","artist":"창모","year":"2019"},
+    {"title":"아무노래","artist":"지코","year":"2020"},
+    {"title":"에라 모르겠다","artist":"BIGBANG","year":"2016"},
+    {"title":"Palette","artist":"아이유","year":"2017"},
+    {"title":"SOLO","artist":"제니","year":"2018"},
+    {"title":"첫눈처럼 너에게 가겠다","artist":"에일리","year":"2017"},
+    {"title":"Stay With Me","artist":"찬열, 펀치","year":"2016"},
+    {"title":"고백","artist":"멜로망스","year":"2017"},
+    {"title":"선물","artist":"멜로망스","year":"2017"},
+    {"title":"흔들리는 꽃들 속에서","artist":"장범준","year":"2019"},
+    {"title":"주지마","artist":"로꼬, 화사","year":"2018"},
+    {"title":"TOMBOY","artist":"혁오","year":"2017"},
+    {"title":"오래된 노래","artist":"스탠딩에그","year":"2012"},
+    {"title":"Atlantis Princess","artist":"보아","year":"2020 리메이크"},
 ]
 
-scores = {
-    "E": 0,
-    "I": 0,
-    "S": 0,
-    "N": 0,
-    "T": 0,
-    "F": 0,
-    "J": 0,
-    "P": 0,
-}
+if st.button("🎧 오늘의 노래 추천받기"):
 
-answers = []
+    song = random.choice(songs)
 
-# 질문 출력
-for i, (question, mbti_type) in enumerate(questions):
+    st.subheader(f"🎶 {song['title']}")
+    st.write(f"👤 가수: {song['artist']}")
+    st.write(f"📅 발매년도: {song['year']}")
 
-    answer = st.radio(
-        f"{i+1}. {question}",
-        ["예", "아니오"],
-        key=i
-    )
-
-    answers.append((answer, mbti_type))
-
-# 결과 버튼
-if st.button("결과 보기"):
-
-    for answer, mbti_type in answers:
-
-        if answer == "예":
-            scores[mbti_type] += 1
-
-    result = ""
-
-    result += "E" if scores["E"] >= scores["I"] else "I"
-    result += "S" if scores["S"] >= scores["N"] else "N"
-    result += "T" if scores["T"] >= scores["F"] else "F"
-    result += "J" if scores["J"] >= scores["P"] else "P"
-
-    st.subheader(f"🎉 당신의 MBTI는: {result}")
-
-    # 간단 설명
-    descriptions = {
-        "INTJ": "전략적이고 독립적인 성향",
-        "INFP": "감성적이고 이상주의적인 성향",
-        "ENTP": "창의적이고 아이디어가 많은 성향",
-        "ESFP": "사교적이고 밝은 성향",
-    }
-
-    st.write(descriptions.get(result, "당신만의 특별한 성향을 가진 타입입니다 😊"))
+    st.success("오늘 이 노래 한번 들어보세요 😊")
